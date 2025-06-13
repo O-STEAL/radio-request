@@ -2,73 +2,81 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>오스틸 | 신청곡&사연 신청</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>오스틸 신청곡</title>
     <link rel="stylesheet" href="/styles/submit.scss" />
   </head>
   <body>
-    <div class="header">
-      <span class="logo">
-        <img src="/assets/logo.svg" alt="로고" class="logo-img" /> 오스틸
-      </span>
-    </div>
-    <div class="main-container">
-      <div class="left-panel">
-        <section class="block">
-          <h2>오늘의 신청곡</h2>
-          <ol class="song-list-ol" id="todaySongs"></ol>
-        </section>
-        <section class="block">
-          <h2>신청곡 목록</h2>
-          <ol class="song-list-ol" id="allSongs"></ol>
-        </section>
+    <nav class="navbar">
+      <div class="logo">🎵 오스틸</div>
+      <div class="user-info">
+        <span id="user-nickname"></span>
+        <button id="logout-btn" class="logout-btn">로그아웃</button>
       </div>
-      <div class="right-panel">
-        <div class="form-title">신청곡&사연 신청</div>
-        <form id="songForm" autocomplete="off">
-          <div class="form-row">
-            <span class="form-label">익명 여부</span>
-            <div class="checkbox-group">
+    </nav>
+    <main class="container">
+      <section class="song-section">
+        <div class="box today-songs">
+          <h2>오늘의 신청곡</h2>
+          <ol id="todaySongs" class="song-list"></ol>
+        </div>
+        <div class="box all-songs">
+          <div class="heading-row">
+            <h2>신청곡 목록</h2>
+            <label class="toggle">
+              <span>ALL</span>
+              <input type="checkbox" id="allToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <ol id="allSongs" class="song-list"></ol>
+        </div>
+      </section>
+      <aside class="form-section">
+        <div class="box form-box">
+          <h2>신청곡&사연 신청</h2>
+          <form id="songForm">
+            <div class="form-group">
+              <label>익명 여부</label>
               <label
-                ><input type="checkbox" name="isAnonymous" value="yes" />
-                예</label
+                ><input type="radio" name="isAnonymous" value="yes" /> 예</label
               >
               <label
-                ><input type="checkbox" name="isAnonymous" value="no" />
+                ><input type="radio" name="isAnonymous" value="no" checked />
                 아니오</label
               >
             </div>
-          </div>
-          <div class="form-row">
-            <label class="form-label" for="songLink">신청곡 링크</label>
-            <input
-              type="url"
-              id="songLink"
-              placeholder="신청곡 유튜브 링크를 입력하세요."
-              required
-            />
-          </div>
-          <div class="form-row">
-            <span class="form-label">사연 여부</span>
-            <div class="checkbox-group">
+            <div class="form-group">
+              <label for="songLink">신청곡 링크</label>
+              <input
+                id="songLink"
+                name="songLink"
+                type="text"
+                placeholder="신청곡 유튜브 링크를 입력하세요."
+              />
+            </div>
+            <div class="form-group">
+              <label>사연 여부</label>
+              <label><input type="checkbox" id="withStory" /> 사연 작성</label>
               <label
-                ><input type="checkbox" id="withStory" checked /> 사연
-                작성</label
-              >
-              <label
-                ><input type="checkbox" id="withoutStory" /> 사연 미작성</label
+                ><input type="checkbox" id="withoutStory" checked /> 사연
+                미작성</label
               >
             </div>
-          </div>
-          <div class="form-row">
-            <label class="form-label" for="story">사연</label>
-            <textarea id="story" placeholder="사연을 입력하세요."></textarea>
-          </div>
-          <button type="submit" class="form-btn">제출</button>
-          <div id="result"></div>
-        </form>
-      </div>
-    </div>
+            <div class="form-group">
+              <label for="story">사연</label>
+              <textarea
+                id="story"
+                name="story"
+                placeholder="사연을 입력하세요."
+              ></textarea>
+            </div>
+            <div id="result" class="result-msg"></div>
+            <button type="submit" class="submit-btn">제출</button>
+          </form>
+        </div>
+      </aside>
+    </main>
     <script type="module" src="/js/submit.js"></script>
   </body>
 </html>

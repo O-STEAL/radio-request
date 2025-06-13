@@ -1,186 +1,198 @@
-$main-bg: #f4f6fa;
-$white: #fff;
-$primary: #3d497b;
-$primary-dark: #222f5a;
-$border-radius: 18px;
-$input-radius: 14px;
-$input-bg: #ededf0;
-$input-border: #e2e3e7;
-$divider: #e7e9f0;
-$font-main: "Pretendard", "Noto Sans KR", sans-serif;
-
 body {
-  background: $main-bg;
-  font-family: $font-main;
+  background: #f3f6fb;
+  margin: 0;
+  font-family: "Noto Sans KR", sans-serif;
 }
-
-.header {
-  width: 100%;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 44px 12px;
   background: #fff;
-  padding: 14px 0 14px 0;
-  margin-bottom: 18px;
-  border-bottom: 2px solid $divider;
+  font-size: 24px;
+  font-weight: 700;
   .logo {
-    color: $primary-dark;
-    font-size: 2.1rem;
-    font-weight: bold;
-    letter-spacing: -2px;
-    padding-left: 2.5vw;
+    font-size: 28px;
+  }
+  .user-info {
     display: flex;
     align-items: center;
     gap: 12px;
-    .logo-img {
-      height: 34px;
-      vertical-align: middle;
+    font-size: 16px;
+    #logout-btn {
+      background: #e84848;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 15px;
+      cursor: pointer;
+      font-weight: 500;
     }
   }
 }
-
-.main-container {
-  max-width: 1200px;
-  margin: 0 auto;
+.container {
   display: flex;
+  justify-content: center;
+  align-items: flex-start;
   gap: 28px;
-  min-height: 540px;
-  justify-content: space-between;
+  margin: 32px auto;
+  max-width: 1200px;
 }
-
-.left-panel {
-  flex: 1.6;
+.song-section {
+  flex: 2;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 22px;
 }
-
-.block {
-  background: $white;
-  border-radius: $border-radius;
-  padding: 20px 26px 16px 26px;
-  box-shadow: 0 3px 16px #e4eaf7;
-  h2 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin: 0 0 12px 0;
-    letter-spacing: -1px;
-  }
+.form-section {
+  flex: 1;
+  min-width: 340px;
 }
-
-.song-list-ol {
-  list-style: none;
+.box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 32px 24px;
+  box-shadow: 0 2px 14px 0 rgba(50, 50, 93, 0.04);
+  margin-bottom: 0;
+}
+.today-songs,
+.all-songs {
+  margin-bottom: 0;
+}
+.song-list {
   margin: 0;
   padding: 0;
-  counter-reset: songno;
-  li {
-    counter-increment: songno;
+  list-style: none;
+  > li {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 7px 0;
-    border-bottom: 1.2px solid $divider;
-    font-size: 1.07rem;
-    &:last-child {
-      border-bottom: none;
-    }
-    &::before {
-      content: counter(songno);
-      font-weight: 600;
-      color: $primary;
-      background: #f4f7ff;
-      width: 25px;
-      height: 25px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.09rem;
+    border-bottom: 1px solid #edf0f5;
+    padding: 8px 0;
+    font-size: 16px;
+    font-weight: 500;
+    .num {
+      display: inline-block;
+      width: 24px;
+      text-align: right;
       margin-right: 10px;
-      flex-shrink: 0;
+      font-weight: 700;
+      color: #4d68be;
+    }
+    .badge {
+      background: #4d68be;
+      color: #fff;
+      border-radius: 5px;
+      padding: 2px 8px;
+      margin-left: 6px;
+      font-size: 12px;
+      font-weight: 400;
+    }
+    a {
+      color: #4669cc;
+      text-decoration: underline;
     }
   }
 }
-
-.right-panel {
-  flex: 1.1;
-  background: $white;
-  border-radius: $border-radius;
-  box-shadow: 0 3px 16px #e4eaf7;
-  padding: 32px 34px 18px 34px;
+.heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  input[type="checkbox"] {
+    display: none;
+  }
+  .slider {
+    display: inline-block;
+    width: 32px;
+    height: 18px;
+    background: #d9d9d9;
+    border-radius: 9px;
+    position: relative;
+    vertical-align: middle;
+    transition: background 0.2s;
+  }
+  input[type="checkbox"]:checked + .slider {
+    background: #4d68be;
+  }
+  .slider::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    transition: left 0.2s;
+  }
+  input[type="checkbox"]:checked + .slider::after {
+    left: 16px;
+  }
+}
+.form-box {
   min-width: 340px;
-  max-width: 430px;
-  display: flex;
-  flex-direction: column;
 }
-
-.form-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 22px;
-  border-bottom: 2px solid $divider;
-  padding-bottom: 13px;
-  letter-spacing: -1px;
-}
-
-.form-row {
-  margin-bottom: 23px;
-}
-
-.form-label {
-  font-size: 1.07rem;
-  font-weight: 600;
-  margin-bottom: 7px;
-  display: block;
-}
-
-input[type="text"],
-input[type="url"],
-textarea {
-  width: 100%;
-  padding: 15px 13px;
-  border: 1.6px solid $input-border;
-  border-radius: $input-radius;
-  font-size: 1.07rem;
-  background: $input-bg;
-  margin-top: 6px;
-  margin-bottom: 2px;
-  font-family: $font-main;
-  &::placeholder {
-    color: #b5b5b5;
-    font-weight: 400;
-    letter-spacing: 0;
+.form-group {
+  margin-bottom: 16px;
+  label {
+    font-size: 15px;
+    font-weight: 500;
+    color: #222;
+  }
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid #dbe2eb;
+    border-radius: 8px;
+    background: #f4f6fa;
+    font-size: 15px;
+    box-sizing: border-box;
+    resize: none;
+  }
+  textarea {
+    min-height: 72px;
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    margin-right: 4px;
+    accent-color: #4d68be;
   }
 }
-
-textarea {
-  min-height: 74px;
-  resize: vertical;
-}
-
-.checkbox-group {
-  display: flex;
-  gap: 18px;
-  margin-top: 5px;
-}
-
-.form-btn {
+.submit-btn {
   width: 100%;
-  background: $primary;
-  color: #fff;
-  font-size: 1.17rem;
-  border: none;
-  border-radius: 13px;
   padding: 15px 0;
-  margin-top: 18px;
+  border: none;
+  border-radius: 12px;
+  background: #4d68be;
+  color: #fff;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: 2px;
-  transition: background 0.18s;
   cursor: pointer;
-  &:active {
-    background: darken($primary, 10%);
-  }
+  margin-top: 10px;
+  transition: background 0.2s;
 }
-
-#result {
-  min-height: 27px;
-  margin-top: 8px;
-  font-size: 1.03rem;
+.submit-btn:hover {
+  background: #3853a5;
+}
+.result-msg {
+  min-height: 18px;
+  font-size: 14px;
+  margin: 6px 0 0 0;
+}
+@media (max-width: 950px) {
+  .container {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .song-section,
+  .form-section {
+    width: 100%;
+  }
 }
