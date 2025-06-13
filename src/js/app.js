@@ -4,7 +4,6 @@ import {
   renderSongForm,
   renderSongList,
 } from "./pages.js";
-import { getUser, logout } from "./utils/auth.js";
 
 const root = document.getElementById("root");
 const nav = document.getElementById("nav");

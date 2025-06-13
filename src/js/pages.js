@@ -1,8 +1,4 @@
-import { AuthForm } from "./components/AuthForm.js";
-import { SongForm } from "./components/SongForm.js";
-import { SongList } from "./components/SongList.js";
-import { login, register } from "./utils/auth.js";
-import { submitSong, fetchSongList, deleteSong } from "./utils/api.js";
+import { AuthForm } from "./AuthForm.js";
 
 export function renderLogin(root) {
   root.innerHTML = AuthForm({ type: "login" });
