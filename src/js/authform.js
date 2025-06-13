@@ -1,3 +1,5 @@
+import { apiFetch } from "./api.js";
+
 const authResult = document.getElementById("authResult");
 
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
@@ -5,7 +7,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
   try {
-    const res = await fetch("/api/auth/login", {
+    const res = await apiFetch("/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -33,7 +35,7 @@ document
     const password = document.getElementById("reg_password").value;
     const nickname = document.getElementById("nickname").value;
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await apiFetch("/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password, nickname }),

@@ -1,4 +1,58 @@
+import { apiFetch } from "./api.js";
 import { AuthForm } from "./AuthForm.js";
+
+// 로그인 함수
+async function login(username, password) {
+  const res = await apiFetch("/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
+  if (!res.ok) return false;
+  const data = await res.json();
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("username", data.username);
+  localStorage.setItem("nickname", data.nickname);
+  return true;
+}
+
+// 회원가입 함수
+async function register(username, password, nickname) {
+  const res = await apiFetch("/auth/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password, nickname }),
+  });
+  return res.ok;
+}
+
+// 신청곡 목록
+async function fetchSongList() {
+  const res = await apiFetch("/songs");
+  if (!res.ok) return [];
+  return res.json();
+}
+
+// 신청곡 제출
+async function submitSong(songLink, story) {
+  const token = localStorage.getItem("token");
+  const res = await apiFetch("/songs", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ songLink, story, token }),
+  });
+  return res.ok;
+}
+
+// 신청곡 삭제(관리자)
+async function deleteSong(id) {
+  const token = localStorage.getItem("token");
+  return apiFetch(`/songs/${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token }),
+  });
+}
 
 export function renderLogin(root) {
   root.innerHTML = AuthForm({ type: "login" });

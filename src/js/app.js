@@ -8,6 +8,17 @@ import {
 const root = document.getElementById("root");
 const nav = document.getElementById("nav");
 
+function getUser() {
+  // 로그인 여부를 localStorage 기준으로 판단
+  return localStorage.getItem("token");
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("username");
+  localStorage.removeItem("nickname");
+}
+
 function route() {
   const hash = window.location.hash.replace("#", "");
   nav.innerHTML = getUser() ? `<button id="logout-btn">로그아웃</button>` : "";
@@ -25,5 +36,6 @@ nav.addEventListener("click", (e) => {
   if (e.target.id === "logout-btn") {
     logout();
     window.location.hash = "";
+    route();
   }
 });

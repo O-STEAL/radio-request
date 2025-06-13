@@ -1,21 +1,47 @@
+import { apiFetch } from "./api.js";
+
 const token = localStorage.getItem("token");
 const nickname = localStorage.getItem("nickname");
 const username = localStorage.getItem("username");
-const resultDiv = document.getElementById("result");
+
+// 사용자 닉네임 표시/로그아웃
+document.getElementById("user-nickname").textContent = nickname
+  ? `${nickname} (${username})`
+  : "";
+document.getElementById("logout-btn").onclick = () => {
+  localStorage.clear();
+  window.location.href = "index.html";
+};
+
+// 오늘의 신청곡/전체 신청곡
 const todaySongsOl = document.getElementById("todaySongs");
 const allSongsOl = document.getElementById("allSongs");
+const resultDiv = document.getElementById("result");
+
+// ALL 토글
+const allToggle = document.getElementById("allToggle");
+let showAll = false;
+allToggle.onchange = () => {
+  showAll = allToggle.checked;
+  loadSongs();
+};
+
+// 사연 여부 체크박스 동기화
 const withStory = document.getElementById("withStory");
 const withoutStory = document.getElementById("withoutStory");
 const storyTextarea = document.getElementById("story");
-
-// 사연 여부 체크박스 동기화 (둘 다 체크 불가)
 withStory.addEventListener("change", () => {
   if (withStory.checked) withoutStory.checked = false;
+  if (withStory.checked) storyTextarea.disabled = false;
 });
 withoutStory.addEventListener("change", () => {
   if (withoutStory.checked) withStory.checked = false;
-  if (withoutStory.checked) storyTextarea.value = "";
+  if (withoutStory.checked) {
+    storyTextarea.value = "";
+    storyTextarea.disabled = true;
+  }
 });
+if (withoutStory.checked) storyTextarea.disabled = true;
 
 // 폼 제출
 document
@@ -38,23 +64,30 @@ document
     const isAnonymous =
       document.querySelector('input[name="isAnonymous"]:checked').value ===
       "yes";
+    if (!songLink) {
+      resultDiv.textContent = "신청곡 링크를 입력하세요.";
+      resultDiv.style.color = "red";
+      return;
+    }
     try {
-      const res = await fetch("/api/songs", {
+      const res = await apiFetch("/songs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           songLink,
           story,
           token,
-          isAnonymous, // 서버에서 익명처리 미구현시 사용X
+          isAnonymous,
         }),
       });
       if (res.status === 201) {
         resultDiv.textContent = "곡이 성공적으로 제출되었습니다!";
         resultDiv.style.color = "green";
         document.getElementById("songForm").reset();
-        withStory.checked = true;
-        withoutStory.checked = false;
+        withStory.checked = false;
+        withoutStory.checked = true;
+        storyTextarea.value = "";
+        storyTextarea.disabled = true;
         loadSongs();
       } else if (res.status === 401) {
         resultDiv.textContent = "인증이 필요합니다. 다시 로그인하세요.";
@@ -78,9 +111,10 @@ async function loadSongs() {
   todaySongsOl.innerHTML = "<li>불러오는 중...</li>";
   allSongsOl.innerHTML = "<li>불러오는 중...</li>";
   try {
-    const res = await fetch("/api/songs");
+    const res = await apiFetch("/songs");
     if (!res.ok) throw new Error();
     const songs = await res.json();
+
     // 오늘의 신청곡 (최신 4개)
     todaySongsOl.innerHTML = "";
     songs
@@ -93,16 +127,20 @@ async function loadSongs() {
         )}${song.story ? ` - ${escapeHtml(song.story)}` : ""}`;
         todaySongsOl.appendChild(li);
       });
-    // 전체 신청곡 목록
+
+    // 전체 신청곡 목록 (showAll: 전체, 아니면 6개만)
     allSongsOl.innerHTML = "";
-    songs
-      .map((song, i) => ({ ...song, idx: i + 1 }))
-      .forEach((song, i) => {
+    const showList = showAll ? songs : songs.slice(-6);
+    showList
+      .map((song, i) => ({ ...song, idx: showList.length - i }))
+      .forEach((song) => {
         const li = document.createElement("li");
-        li.innerHTML = `<span class="num">${song.idx}</span> ${escapeHtml(
-          song.songLink
-        )}${song.story ? ` - ${escapeHtml(song.story)}` : ""}`;
-        // 임시: 5번째 항목에 "조상철" 뱃지 부여 (샘플)
+        // 예시: 3번째 항목 링크, 5번째 뱃지
+        let songTitle = escapeHtml(song.songLink);
+        if (song.idx === 3) songTitle = `<a href="#">${songTitle}</a>`;
+        li.innerHTML = `<span class="num">${song.idx}</span> ${songTitle}${
+          song.story ? ` - ${escapeHtml(song.story)}` : ""
+        }`;
         if (song.idx === 5) li.innerHTML += `<span class="badge">조상철</span>`;
         allSongsOl.appendChild(li);
       });

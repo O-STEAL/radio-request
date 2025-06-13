@@ -1,3 +1,5 @@
+import { apiFetch } from "./api.js";
+
 document
   .getElementById("loginForm")
   .addEventListener("submit", async function (e) {
@@ -6,7 +8,7 @@ document
     const password = document.getElementById("password").value;
 
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await apiFetch("/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
