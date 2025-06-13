@@ -1,5 +1,18 @@
+$main-bg: #f3f6fb;
+$white: #fff;
+$primary: #3d497b;
+$primary-light: #4d68be;
+$primary-dark: #25305b;
+$input-bg: #f4f6fa;
+$input-border: #dbe2eb;
+$shadow: 0 2px 14px 0 rgba(50, 50, 93, 0.04);
+
+html {
+  height: 100vh;
+}
+
 body {
-  background: #f3f6fb;
+  background: $main-bg;
   margin: 0;
   font-family: "Noto Sans KR", sans-serif;
 }
@@ -7,26 +20,47 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 22px 44px 12px;
-  background: #fff;
+  padding: 22px 24px;
+  background: $white;
   font-size: 24px;
   font-weight: 700;
   .logo {
+    display: flex;
+    align-items: center;
     font-size: 28px;
+    gap: 9px;
+    .navbar-logo-img {
+      height: 40px;
+      vertical-align: middle;
+    }
+    span {
+      font-size: 25px;
+      font-weight: 800;
+      color: $primary;
+      letter-spacing: -0.5px;
+    }
   }
   .user-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 18px;
     font-size: 16px;
+    font-weight: 700;
+    color: #222;
     #logout-btn {
       background: #e84848;
       color: #fff;
       border: none;
       border-radius: 6px;
-      padding: 5px 15px;
+      padding: 7px 22px;
       cursor: pointer;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 1px;
+      transition: background 0.17s;
+      &:hover {
+        background: #c43737;
+      }
     }
   }
 }
@@ -46,13 +80,13 @@ body {
 }
 .form-section {
   flex: 1;
-  min-width: 340px;
+  min-width: 360px;
 }
 .box {
-  background: #fff;
+  background: $white;
   border-radius: 16px;
   padding: 32px 32px 24px;
-  box-shadow: 0 2px 14px 0 rgba(50, 50, 93, 0.04);
+  box-shadow: $shadow;
   margin-bottom: 0;
 }
 .today-songs,
@@ -76,10 +110,10 @@ body {
       text-align: right;
       margin-right: 10px;
       font-weight: 700;
-      color: #4d68be;
+      color: $primary-light;
     }
     .badge {
-      background: #4d68be;
+      background: $primary-light;
       color: #fff;
       border-radius: 5px;
       padding: 2px 8px;
@@ -88,7 +122,7 @@ body {
       font-weight: 400;
     }
     a {
-      color: #4669cc;
+      color: $primary-light;
       text-decoration: underline;
     }
   }
@@ -117,7 +151,7 @@ body {
     transition: background 0.2s;
   }
   input[type="checkbox"]:checked + .slider {
-    background: #4d68be;
+    background: $primary-light;
   }
   .slider::after {
     content: "";
@@ -143,15 +177,16 @@ body {
     font-size: 15px;
     font-weight: 500;
     color: #222;
+    margin-bottom: 2px;
   }
   input[type="text"],
   textarea {
     width: 100%;
     padding: 10px;
     margin-top: 6px;
-    border: 1px solid #dbe2eb;
+    border: 1px solid $input-border;
     border-radius: 8px;
-    background: #f4f6fa;
+    background: $input-bg;
     font-size: 15px;
     box-sizing: border-box;
     resize: none;
@@ -162,7 +197,7 @@ body {
   input[type="checkbox"],
   input[type="radio"] {
     margin-right: 4px;
-    accent-color: #4d68be;
+    accent-color: $primary-light;
   }
 }
 .submit-btn {
@@ -170,21 +205,22 @@ body {
   padding: 15px 0;
   border: none;
   border-radius: 12px;
-  background: #4d68be;
+  background: $primary-light;
   color: #fff;
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
   margin-top: 10px;
   transition: background 0.2s;
-}
-.submit-btn:hover {
-  background: #3853a5;
+  &:hover {
+    background: $primary-dark;
+  }
 }
 .result-msg {
   min-height: 18px;
   font-size: 14px;
   margin: 6px 0 0 0;
+  color: #21a121;
 }
 @media (max-width: 950px) {
   .container {
