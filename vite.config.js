@@ -14,16 +14,16 @@ export default ({ mode }) => {
         "/components": resolve(__dirname, "src/components"),
       },
     },
+    server: {
+      proxy: {
+        "/api": "http://localhost:3000",
+      },
+    },
     build: {
       outDir: "dist",
       rollupOptions: {
         input: {
           main: resolve(__dirname, "index.html"),
-          write: resolve(__dirname, "write.html"),
-          code: resolve(__dirname, "code.html"),
-          user: resolve(__dirname, "user.html"),
-          edit: resolve(__dirname, "edit.html"),
-          teacher: resolve(__dirname, "teacher.html"),
         },
       },
     },

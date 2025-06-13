@@ -1,16 +1,14 @@
-// ES Module 방식 (package.json에 "type": "module"이 있을 때 사용)
 import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// index.html이 프로젝트 루트(/)에 있을 때 정적 파일 제공 세팅
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 app.use(express.static(__dirname));
 
 let users = [
