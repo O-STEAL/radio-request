@@ -24,6 +24,7 @@ export default ({ mode }) => {
       rollupOptions: {
         input: {
           main: resolve(__dirname, "index.html"),
+          submit: resolve(__dirname, "submit.html"),
         },
       },
     },
