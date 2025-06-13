@@ -1,19 +1,18 @@
 import { apiFetch } from "./api.js";
 
-// 슬라이드 컨텐츠 (이미지는 대체 텍스트)
 const slides = [
   {
-    img: "📢",
+    img: "/assets/speaker.svg",
     title: "오늘은 어떤 노래 듣지?",
     desc: "오스틸에서 내가 듣고 싶은 노래를<br/>내가 직접 점심방송 신청곡으로 신청하세요!",
   },
   {
-    img: "📮",
+    img: "/assets/post.svg",
     title: "내 사연을 공유할래요",
     desc: "오스틸에서 모두에게 들려줄 나의 사연을<br/>직접 점심방송 사연으로 신청하세요!",
   },
   {
-    img: "🎤",
+    img: "/assets/mic.svg",
     title: "학교 점심방송, 내손으로",
     desc: "여러분의 적극적인 노래 신청과 사연 신청으로<br/>보다 풍성한 점심방송이 만들어져요!",
   },
@@ -25,11 +24,9 @@ let regStep = 0;
 function renderSlide() {
   const slide = slides[currentSlide];
   document.getElementById("slide-area").innerHTML = `
-    <div style="font-size:84px; margin-bottom:24px;">${slide.img}</div>
-    <div class="modal-title">${slide.title}</div>
-    <div style="color:#666;text-align:center;margin-bottom:36px;">${
-      slide.desc
-    }</div>
+    <img src="${slide.img}" alt="" class="slide-img" />
+    <div class="slide-title">${slide.title}</div>
+    <div class="slide-desc">${slide.desc}</div>
     <div class="slide-indicator">
       ${slides
         .map(
@@ -49,10 +46,12 @@ setInterval(() => {
   renderSlide();
 }, 5000);
 
+// 폼 관련
 const loginForm = document.getElementById("login-form");
 const registerForm1 = document.getElementById("register-form1");
 const registerForm2 = document.getElementById("register-form2");
 
+// 회원가입 단계 이동
 document.getElementById("to-register").onclick = () => {
   loginForm.style.display = "none";
   registerForm1.style.display = "block";
@@ -77,10 +76,58 @@ document.getElementById("to-login2").onclick = () => {
   renderSlide();
 };
 
+// 중복확인 로직
+let dupChecked = false;
+let lastCheckedId = "";
+const usernameInput = registerForm1.querySelector('[name="username"]');
+usernameInput.addEventListener("input", () => {
+  dupChecked = false;
+  lastCheckedId = "";
+  document.getElementById("dup-msg").textContent = "";
+});
+document.getElementById("dupcheck-btn").onclick = async () => {
+  const username = usernameInput.value.trim();
+  const msg = document.getElementById("dup-msg");
+  msg.textContent = "";
+  if (!username) {
+    msg.textContent = "아이디를 입력하세요.";
+    msg.className = "msg-err";
+    dupChecked = false;
+    return;
+  }
+  msg.textContent = "확인 중...";
+  const res = await apiFetch(`/auth/exists/${encodeURIComponent(username)}`);
+  if (!res.ok) {
+    msg.textContent = "서버 오류가 발생했습니다.";
+    msg.className = "msg-err";
+    dupChecked = false;
+    return;
+  }
+  const { exists } = await res.json();
+  if (exists) {
+    msg.textContent = "이미 사용 중인 아이디입니다.";
+    msg.className = "msg-err";
+    dupChecked = false;
+  } else {
+    msg.textContent = "사용 가능한 아이디입니다!";
+    msg.className = "msg-ok";
+    dupChecked = true;
+    lastCheckedId = username;
+  }
+};
+
 document.getElementById("register-next1").onclick = () => {
-  const username = registerForm1.username.value.trim();
-  const nickname = registerForm1.nickname.value.trim();
+  const username = usernameInput.value.trim();
+  const nickname = registerForm1
+    .querySelector('[name="nickname"]')
+    .value.trim();
+  const msg = document.getElementById("dup-msg");
   if (!username || !nickname) return alert("모든 항목을 입력하세요.");
+  if (!dupChecked || lastCheckedId !== username) {
+    msg.textContent = "아이디 중복확인을 해주세요.";
+    msg.className = "msg-err";
+    return;
+  }
   apiFetch("/songs").then(() => {
     registerForm1.style.display = "none";
     registerForm2.style.display = "block";
@@ -89,6 +136,7 @@ document.getElementById("register-next1").onclick = () => {
     renderSlide();
   });
 };
+
 document.getElementById("register-next2").onclick = () => {
   const pw1 = document.getElementById("pw1").value;
   const pw2 = document.getElementById("pw2").value;
@@ -98,9 +146,9 @@ document.getElementById("register-next2").onclick = () => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      username: registerForm1.username.value,
+      username: registerForm1.querySelector('[name="username"]').value,
       password: pw1,
-      nickname: registerForm1.nickname.value,
+      nickname: registerForm1.querySelector('[name="nickname"]').value,
     }),
   }).then((r) => {
     if (r.status === 201) {
