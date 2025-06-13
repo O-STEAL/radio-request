@@ -2,32 +2,72 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
+    <title>오스틸 | 신청곡&사연 신청</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>곡 제출</title>
-    <link rel="stylesheet" href="/styles/main.css" />
+    <link rel="stylesheet" href="/styles/submit.scss" />
   </head>
   <body>
-    <div class="container">
-      <h1>곡 제출</h1>
-      <form id="songForm">
-        <input
-          type="url"
-          id="songLink"
-          placeholder="노래 유튜브 링크"
-          required
-        />
-        <textarea
-          id="story"
-          placeholder="사연을 입력하세요"
-          required
-        ></textarea>
-        <button type="submit">제출</button>
-      </form>
-      <div id="result"></div>
-      <hr />
-      <h2>내가 제출한 곡</h2>
-      <ul id="mySongs"></ul>
-      <a href="index.html">돌아가기</a>
+    <div class="header">
+      <span class="logo">
+        <img src="/assets/logo.svg" alt="로고" class="logo-img" /> 오스틸
+      </span>
+    </div>
+    <div class="main-container">
+      <div class="left-panel">
+        <section class="block">
+          <h2>오늘의 신청곡</h2>
+          <ol class="song-list-ol" id="todaySongs"></ol>
+        </section>
+        <section class="block">
+          <h2>신청곡 목록</h2>
+          <ol class="song-list-ol" id="allSongs"></ol>
+        </section>
+      </div>
+      <div class="right-panel">
+        <div class="form-title">신청곡&사연 신청</div>
+        <form id="songForm" autocomplete="off">
+          <div class="form-row">
+            <span class="form-label">익명 여부</span>
+            <div class="checkbox-group">
+              <label
+                ><input type="checkbox" name="isAnonymous" value="yes" />
+                예</label
+              >
+              <label
+                ><input type="checkbox" name="isAnonymous" value="no" />
+                아니오</label
+              >
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="songLink">신청곡 링크</label>
+            <input
+              type="url"
+              id="songLink"
+              placeholder="신청곡 유튜브 링크를 입력하세요."
+              required
+            />
+          </div>
+          <div class="form-row">
+            <span class="form-label">사연 여부</span>
+            <div class="checkbox-group">
+              <label
+                ><input type="checkbox" id="withStory" checked /> 사연
+                작성</label
+              >
+              <label
+                ><input type="checkbox" id="withoutStory" /> 사연 미작성</label
+              >
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="story">사연</label>
+            <textarea id="story" placeholder="사연을 입력하세요."></textarea>
+          </div>
+          <button type="submit" class="form-btn">제출</button>
+          <div id="result"></div>
+        </form>
+      </div>
     </div>
     <script type="module" src="/js/submit.js"></script>
   </body>

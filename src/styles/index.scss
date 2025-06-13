@@ -1,0 +1,208 @@
+$main-bg: #f4f6fa;
+$modal-bg: #fff;
+$primary: #3d497b;
+$primary-dark: #25305b;
+$border-radius: 22px;
+$card-shadow: 0 6px 32px #d6dbe8;
+$divider: #ececec;
+$text-dark: #222;
+$text-light: #888;
+$form-radius: 16px;
+$input-bg: #f3f4f8;
+$input-border: #e2e5ed;
+$input-placeholder: #aaa;
+$btn-font: "Pretendard", "Noto Sans KR", sans-serif;
+
+body {
+  background: $main-bg;
+  min-height: 100vh;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+}
+
+.modal-box {
+  max-width: 980px;
+  margin: 70px auto 0 auto;
+  background: $modal-bg;
+  border-radius: $border-radius;
+  display: flex;
+  min-height: 620px;
+  box-shadow: $card-shadow;
+  overflow: hidden;
+  @media (max-width: 700px) {
+    flex-direction: column;
+    max-width: 98vw;
+    margin: 16px auto;
+    min-height: 0;
+  }
+}
+
+.modal-left {
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 36px 56px 36px;
+  border-right: 1.5px solid $divider;
+  background: $modal-bg;
+  @media (max-width: 700px) {
+    border-right: none;
+    border-bottom: 1.5px solid $divider;
+    padding: 36px 16px 28px 16px;
+  }
+
+  .slide-img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 22px auto;
+    @media (max-width: 700px) {
+      width: 90px;
+      height: 90px;
+    }
+  }
+
+  .slide-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: $text-dark;
+    text-align: center;
+    margin-bottom: 14px;
+    letter-spacing: -1px;
+    line-height: 1.15;
+  }
+  .slide-desc {
+    color: $text-light;
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 28px;
+    line-height: 1.6;
+    letter-spacing: -0.5px;
+  }
+  .slide-indicator {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 10px;
+    .slide-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #dbdeeb;
+      &.active {
+        background: $primary;
+      }
+    }
+  }
+}
+
+.modal-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: $modal-bg;
+  padding: 56px 40px 56px 40px;
+  @media (max-width: 700px) {
+    padding: 32px 10vw 32px 10vw;
+  }
+  @media (max-width: 480px) {
+    padding: 24px 4vw;
+  }
+}
+
+.form-title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: $primary;
+  text-align: center;
+  margin-bottom: 30px;
+  letter-spacing: -1px;
+}
+
+form {
+  width: 100%;
+  max-width: 340px;
+}
+
+.form-group {
+  margin-bottom: 22px;
+  label {
+    font-size: 1.06rem;
+    color: $text-dark;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+  }
+}
+
+.form-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 18px;
+  border-radius: $form-radius;
+  border: 1.7px solid $input-border;
+  background: $input-bg;
+  font-size: 1.09rem;
+  color: $text-dark;
+  margin-top: 7px;
+  margin-bottom: 2px;
+  font-family: $btn-font;
+  &::placeholder {
+    color: $input-placeholder;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+}
+
+.form-btn {
+  width: 100%;
+  padding: 15px 0;
+  border-radius: $form-radius;
+  background: $primary;
+  color: #fff;
+  font-size: 1.13rem;
+  font-family: $btn-font;
+  border: none;
+  font-weight: 600;
+  margin-top: 18px;
+  margin-bottom: 10px;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:active {
+    background: $primary-dark;
+  }
+  &.secondary {
+    background: #fff;
+    color: $primary;
+    border: 1.6px solid $primary;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.form-link {
+  text-align: right;
+  margin-top: 14px;
+  a {
+    color: $primary;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.98rem;
+  }
+}
+
+.msg-ok {
+  color: #21a121;
+  font-size: 0.96em;
+  margin-top: 7px;
+}
+.msg-err {
+  color: #e01b41;
+  font-size: 0.96em;
+  margin-top: 7px;
+}

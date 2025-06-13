@@ -1,0 +1,186 @@
+$main-bg: #f4f6fa;
+$white: #fff;
+$primary: #3d497b;
+$primary-dark: #222f5a;
+$border-radius: 18px;
+$input-radius: 14px;
+$input-bg: #ededf0;
+$input-border: #e2e3e7;
+$divider: #e7e9f0;
+$font-main: "Pretendard", "Noto Sans KR", sans-serif;
+
+body {
+  background: $main-bg;
+  font-family: $font-main;
+}
+
+.header {
+  width: 100%;
+  background: #fff;
+  padding: 14px 0 14px 0;
+  margin-bottom: 18px;
+  border-bottom: 2px solid $divider;
+  .logo {
+    color: $primary-dark;
+    font-size: 2.1rem;
+    font-weight: bold;
+    letter-spacing: -2px;
+    padding-left: 2.5vw;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    .logo-img {
+      height: 34px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 28px;
+  min-height: 540px;
+  justify-content: space-between;
+}
+
+.left-panel {
+  flex: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.block {
+  background: $white;
+  border-radius: $border-radius;
+  padding: 20px 26px 16px 26px;
+  box-shadow: 0 3px 16px #e4eaf7;
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    letter-spacing: -1px;
+  }
+}
+
+.song-list-ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: songno;
+  li {
+    counter-increment: songno;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1.2px solid $divider;
+    font-size: 1.07rem;
+    &:last-child {
+      border-bottom: none;
+    }
+    &::before {
+      content: counter(songno);
+      font-weight: 600;
+      color: $primary;
+      background: #f4f7ff;
+      width: 25px;
+      height: 25px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.09rem;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.right-panel {
+  flex: 1.1;
+  background: $white;
+  border-radius: $border-radius;
+  box-shadow: 0 3px 16px #e4eaf7;
+  padding: 32px 34px 18px 34px;
+  min-width: 340px;
+  max-width: 430px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 22px;
+  border-bottom: 2px solid $divider;
+  padding-bottom: 13px;
+  letter-spacing: -1px;
+}
+
+.form-row {
+  margin-bottom: 23px;
+}
+
+.form-label {
+  font-size: 1.07rem;
+  font-weight: 600;
+  margin-bottom: 7px;
+  display: block;
+}
+
+input[type="text"],
+input[type="url"],
+textarea {
+  width: 100%;
+  padding: 15px 13px;
+  border: 1.6px solid $input-border;
+  border-radius: $input-radius;
+  font-size: 1.07rem;
+  background: $input-bg;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  font-family: $font-main;
+  &::placeholder {
+    color: #b5b5b5;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+}
+
+textarea {
+  min-height: 74px;
+  resize: vertical;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 18px;
+  margin-top: 5px;
+}
+
+.form-btn {
+  width: 100%;
+  background: $primary;
+  color: #fff;
+  font-size: 1.17rem;
+  border: none;
+  border-radius: 13px;
+  padding: 15px 0;
+  margin-top: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: background 0.18s;
+  cursor: pointer;
+  &:active {
+    background: darken($primary, 10%);
+  }
+}
+
+#result {
+  min-height: 27px;
+  margin-top: 8px;
+  font-size: 1.03rem;
+}
