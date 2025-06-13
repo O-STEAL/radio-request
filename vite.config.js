@@ -11,7 +11,6 @@ export default ({ mode }) => {
       alias: {
         "/js": resolve(__dirname, "src/js"),
         "/styles": resolve(__dirname, "src/styles"),
-        "/components": resolve(__dirname, "src/components"),
       },
     },
     server: {

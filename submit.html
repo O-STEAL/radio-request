@@ -4,33 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>곡 제출</title>
+    <link rel="stylesheet" href="/styles/main.css" />
   </head>
   <body>
     <div class="container">
       <h1>곡 제출</h1>
       <form id="songForm">
-        <div>
-          <label for="songLink">노래 링크:</label>
-          <input
-            type="url"
-            id="songLink"
-            name="songLink"
-            required
-            placeholder="노래 유튜브 링크 등"
-          />
-        </div>
-        <div>
-          <label for="story">사연:</label>
-          <textarea
-            id="story"
-            name="story"
-            required
-            placeholder="사연을 입력하세요"
-          ></textarea>
-        </div>
+        <input
+          type="url"
+          id="songLink"
+          placeholder="노래 유튜브 링크"
+          required
+        />
+        <textarea
+          id="story"
+          placeholder="사연을 입력하세요"
+          required
+        ></textarea>
         <button type="submit">제출</button>
       </form>
       <div id="result"></div>
+      <hr />
+      <h2>내가 제출한 곡</h2>
+      <ul id="mySongs"></ul>
       <a href="index.html">돌아가기</a>
     </div>
     <script type="module" src="/js/submit.js"></script>
