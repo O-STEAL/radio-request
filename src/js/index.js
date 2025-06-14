@@ -20,6 +20,13 @@ const slides = [
 
 let currentSlide = 0;
 let regStep = 0;
+let dupChecked = false;
+let lastCheckedId = "";
+
+const loginForm = document.getElementById("login-form");
+const registerForm1 = document.getElementById("register-form1");
+const registerForm2 = document.getElementById("register-form2");
+const usernameInput = registerForm1.querySelector('[name="username"]');
 
 function renderSlide() {
   const slide = slides[currentSlide];
@@ -39,53 +46,40 @@ function renderSlide() {
     </div>
   `;
 }
-renderSlide();
 
-setInterval(() => {
-  currentSlide = (currentSlide + 1) % slides.length;
-  renderSlide();
-}, 5000);
+function startSlideAutoAdvance() {
+  setInterval(() => {
+    currentSlide = (currentSlide + 1) % slides.length;
+    renderSlide();
+  }, 5000);
+}
 
-// 폼 관련
-const loginForm = document.getElementById("login-form");
-const registerForm1 = document.getElementById("register-form1");
-const registerForm2 = document.getElementById("register-form2");
-
-// 회원가입 단계 이동
-document.getElementById("to-register").onclick = () => {
-  loginForm.style.display = "none";
-  registerForm1.style.display = "block";
-  registerForm2.style.display = "none";
-  regStep = 1;
-  currentSlide = 1;
-  renderSlide();
-};
-document.getElementById("to-login1").onclick = () => {
+function showLoginForm() {
   loginForm.style.display = "block";
   registerForm1.style.display = "none";
   registerForm2.style.display = "none";
   regStep = 0;
   currentSlide = 0;
   renderSlide();
-};
-document.getElementById("to-login2").onclick = () => {
-  registerForm2.style.display = "none";
+}
+function showRegisterStep1() {
+  loginForm.style.display = "none";
   registerForm1.style.display = "block";
+  registerForm2.style.display = "none";
   regStep = 1;
   currentSlide = 1;
   renderSlide();
-};
+}
+function showRegisterStep2() {
+  registerForm1.style.display = "none";
+  registerForm2.style.display = "block";
+  regStep = 2;
+  currentSlide = 2;
+  renderSlide();
+}
 
-// 중복확인 로직
-let dupChecked = false;
-let lastCheckedId = "";
-const usernameInput = registerForm1.querySelector('[name="username"]');
-usernameInput.addEventListener("input", () => {
-  dupChecked = false;
-  lastCheckedId = "";
-  document.getElementById("dup-msg").textContent = "";
-});
-document.getElementById("dupcheck-btn").onclick = async () => {
+// 중복확인
+async function checkUsernameDuplication() {
   const username = usernameInput.value.trim();
   const msg = document.getElementById("dup-msg");
   msg.textContent = "";
@@ -96,7 +90,11 @@ document.getElementById("dupcheck-btn").onclick = async () => {
     return;
   }
   msg.textContent = "확인 중...";
-  const res = await apiFetch(`/auth/exists/${encodeURIComponent(username)}`);
+  const res = await apiFetch(`/auth/check-id`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username }),
+  });
   if (!res.ok) {
     msg.textContent = "서버 오류가 발생했습니다.";
     msg.className = "msg-err";
@@ -114,9 +112,10 @@ document.getElementById("dupcheck-btn").onclick = async () => {
     dupChecked = true;
     lastCheckedId = username;
   }
-};
+}
 
-document.getElementById("register-next1").onclick = () => {
+// 회원가입 1단계
+function handleRegisterStep1() {
   const username = usernameInput.value.trim();
   const name = registerForm1.querySelector('[name="name"]').value.trim();
   const msg = document.getElementById("dup-msg");
@@ -127,42 +126,40 @@ document.getElementById("register-next1").onclick = () => {
     return;
   }
   apiFetch("/songs").then(() => {
-    registerForm1.style.display = "none";
-    registerForm2.style.display = "block";
-    regStep = 2;
-    currentSlide = 2;
-    renderSlide();
+    showRegisterStep2();
   });
-};
+}
 
-document.getElementById("register-next2").onclick = () => {
+// 회원가입 2단계
+async function handleRegisterStep2() {
   const pw1 = document.getElementById("pw1").value;
   const pw2 = document.getElementById("pw2").value;
   if (pw1.length < 8) return alert("비밀번호는 8자 이상이어야 합니다.");
   if (pw1 !== pw2) return alert("비밀번호가 일치하지 않습니다.");
-  apiFetch("/auth/register", {
+  const res = await apiFetch("/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       username: registerForm1.querySelector('[name="username"]').value,
-      password: pw1,
       name: registerForm1.querySelector('[name="name"]').value,
+      password: pw1,
     }),
-  }).then((r) => {
-    if (r.status === 201) {
-      alert("회원가입이 완료되었습니다! 로그인 해주세요.");
-      registerForm2.style.display = "none";
-      loginForm.style.display = "block";
-      regStep = 0;
-      currentSlide = 0;
-      renderSlide();
-    } else {
-      alert("회원가입 실패(중복 아이디 등)");
-    }
   });
-};
+  if (res.status === 201 || res.ok) {
+    alert("회원가입이 완료되었습니다! 로그인 해주세요.");
+    showLoginForm();
+    registerForm1.reset();
+    registerForm2.reset();
+  } else {
+    const data = await res.json().catch(() => null);
+    alert(
+      data && data.message ? data.message : "회원가입 실패(중복 아이디 등)"
+    );
+  }
+}
 
-loginForm.onsubmit = async (e) => {
+// 로그인
+async function handleLogin(e) {
   e.preventDefault();
   const username = loginForm.username.value.trim();
   const password = loginForm.password.value;
@@ -184,9 +181,10 @@ loginForm.onsubmit = async (e) => {
   localStorage.setItem("username", data.username);
   localStorage.setItem("name", data.name);
   window.location.href = "submit";
-};
+}
 
-document.getElementById("pw2").oninput = () => {
+// 비밀번호 일치 체크
+function checkPasswordMatch() {
   const pw1 = document.getElementById("pw1").value;
   const pw2 = document.getElementById("pw2").value;
   const msg = document.getElementById("pw-msg");
@@ -198,4 +196,28 @@ document.getElementById("pw2").oninput = () => {
     msg.textContent = "비밀번호가 다릅니다.";
     msg.className = "msg-err";
   }
-};
+}
+
+function setEventListeners() {
+  document.getElementById("to-register").onclick = showRegisterStep1;
+  document.getElementById("to-login1").onclick = showLoginForm;
+  document.getElementById("to-login2").onclick = showRegisterStep1;
+  usernameInput.addEventListener("input", () => {
+    dupChecked = false;
+    lastCheckedId = "";
+    document.getElementById("dup-msg").textContent = "";
+  });
+  document.getElementById("dupcheck-btn").onclick = checkUsernameDuplication;
+  document.getElementById("register-next1").onclick = handleRegisterStep1;
+  document.getElementById("register-next2").onclick = handleRegisterStep2;
+  loginForm.onsubmit = handleLogin;
+  document.getElementById("pw2").oninput = checkPasswordMatch;
+}
+
+function init() {
+  renderSlide();
+  startSlideAutoAdvance();
+  setEventListeners();
+}
+
+init();

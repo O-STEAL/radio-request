@@ -1,5 +1,5 @@
 import { apiFetch } from "./api.js";
-import { AuthForm } from "./AuthForm.js";
+import { AuthForm } from "./auth.js";
 
 // 로그인 함수
 async function login(username, password) {
