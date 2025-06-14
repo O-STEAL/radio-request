@@ -15,8 +15,8 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     if (res.ok) {
       const data = await res.json();
       localStorage.setItem("token", data.token);
-      localStorage.setItem("nickname", data.nickname);
-      window.location.href = "submit.html";
+      localStorage.setItem("name", data.name);
+      window.location.href = "submit";
     } else {
       authResult.textContent = "로그인 실패! 아이디/비밀번호를 확인하세요.";
       authResult.style.color = "red";
@@ -33,12 +33,12 @@ document
     e.preventDefault();
     const username = document.getElementById("reg_username").value;
     const password = document.getElementById("reg_password").value;
-    const nickname = document.getElementById("nickname").value;
+    const name = document.getElementById("name").value;
     try {
       const res = await apiFetch("/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, nickname }),
+        body: JSON.stringify({ username, name, password }),
       });
       if (res.ok) {
         authResult.textContent = "회원가입 성공! 로그인 해주세요.";

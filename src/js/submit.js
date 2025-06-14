@@ -1,12 +1,12 @@
 import { apiFetch } from "./api.js";
 
 const token = localStorage.getItem("token");
-const nickname = localStorage.getItem("nickname");
+const name = localStorage.getItem("name");
 const username = localStorage.getItem("username");
 
-// 사용자 닉네임 표시/로그아웃
-document.getElementById("user-nickname").textContent = nickname
-  ? `${nickname} (${username})`
+// 사용자 name 표시/로그아웃
+document.getElementById("user-name").textContent = name
+  ? `${name} (${username})`
   : "";
 document.getElementById("logout-btn").onclick = () => {
   localStorage.clear();

@@ -12,16 +12,16 @@ async function login(username, password) {
   const data = await res.json();
   localStorage.setItem("token", data.token);
   localStorage.setItem("username", data.username);
-  localStorage.setItem("nickname", data.nickname);
+  localStorage.setItem("name", data.name);
   return true;
 }
 
 // 회원가입 함수
-async function register(username, password, nickname) {
+async function register(username, password, name) {
   const res = await apiFetch("/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password, nickname }),
+    body: JSON.stringify({ username, password, name }),
   });
   return res.ok;
 }
@@ -73,7 +73,7 @@ export function renderRegister(root) {
     const ok = await register(
       fd.get("username"),
       fd.get("password"),
-      fd.get("nickname")
+      fd.get("name")
     );
     if (!ok) return alert("회원가입 실패");
     window.location.hash = "";

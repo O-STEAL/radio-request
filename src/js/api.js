@@ -1,8 +1,14 @@
-// src/api.js
 const API_URL = import.meta.env.VITE_API_URL;
 
-export function apiFetch(path, options) {
-  // path가 이미 http/https로 시작하면 그대로, 아니면 prefix
+export async function apiFetch(path, options = {}) {
   const url = path.startsWith("http") ? path : API_URL + path;
-  return fetch(url, options);
+  const token = localStorage.getItem("token");
+  const headers = options.headers ? { ...options.headers } : {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  return fetch(url, {
+    ...options,
+    headers,
+  });
 }

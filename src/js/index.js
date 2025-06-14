@@ -118,11 +118,9 @@ document.getElementById("dupcheck-btn").onclick = async () => {
 
 document.getElementById("register-next1").onclick = () => {
   const username = usernameInput.value.trim();
-  const nickname = registerForm1
-    .querySelector('[name="nickname"]')
-    .value.trim();
+  const name = registerForm1.querySelector('[name="name"]').value.trim();
   const msg = document.getElementById("dup-msg");
-  if (!username || !nickname) return alert("모든 항목을 입력하세요.");
+  if (!username || !name) return alert("모든 항목을 입력하세요.");
   if (!dupChecked || lastCheckedId !== username) {
     msg.textContent = "아이디 중복확인을 해주세요.";
     msg.className = "msg-err";
@@ -148,7 +146,7 @@ document.getElementById("register-next2").onclick = () => {
     body: JSON.stringify({
       username: registerForm1.querySelector('[name="username"]').value,
       password: pw1,
-      nickname: registerForm1.querySelector('[name="nickname"]').value,
+      name: registerForm1.querySelector('[name="name"]').value,
     }),
   }).then((r) => {
     if (r.status === 201) {
@@ -184,8 +182,8 @@ loginForm.onsubmit = async (e) => {
   const data = await res.json();
   localStorage.setItem("token", data.token);
   localStorage.setItem("username", data.username);
-  localStorage.setItem("nickname", data.nickname);
-  window.location.href = "submit.html";
+  localStorage.setItem("name", data.name);
+  window.location.href = "submit";
 };
 
 document.getElementById("pw2").oninput = () => {

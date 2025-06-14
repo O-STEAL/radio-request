@@ -16,7 +16,7 @@ function getUser() {
 function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("username");
-  localStorage.removeItem("nickname");
+  localStorage.removeItem("name");
 }
 
 function route() {

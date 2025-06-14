@@ -16,10 +16,10 @@ document
       if (res.ok) {
         const data = await res.json();
         localStorage.setItem("token", data.token);
-        localStorage.setItem("nickname", data.nickname);
-        window.location.href = "submit.html";
+        localStorage.setItem("name", data.name);
+        window.location.href = "submit";
       } else {
-        alert("로그인 실패! 아이디/비밀번호를 확인하세요.");
+        alert("아이디 / 비밀번호를 확인해주세요");
       }
     } catch (err) {
       alert("서버와 연결할 수 없습니다.");
