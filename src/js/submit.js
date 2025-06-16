@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 2000);
         return;
       }
-      const songLink = document.getElementById("songLink").value.trim(); // <-- 변경!
+      const songLink = document.getElementById("songLink").value.trim();
       const anonymous =
         document.querySelector('input[name="isAnonymous"]:checked').value ===
         "yes";
@@ -124,9 +124,13 @@ document.addEventListener("DOMContentLoaded", () => {
         .reverse()
         .forEach((song, i) => {
           const li = document.createElement("li");
-          li.innerHTML = `<span class="num">${4 - i}</span> ${escapeHtml(
-            song.songLink
-          )}${song.story ? ` - ${escapeHtml(song.story)}` : ""}`;
+          const songTitle = song.songTitle || song.songLink || "";
+          const storyHtml = song.story
+            ? `<span class="story">${escapeHtml(song.story)}</span><br>`
+            : "";
+          li.innerHTML = `<span class="num">${
+            4 - i
+          }</span> <strong>${escapeHtml(songTitle)}</strong>${storyHtml}`;
           todaySongsOl.appendChild(li);
         });
 
@@ -136,13 +140,13 @@ document.addEventListener("DOMContentLoaded", () => {
         .map((song, i) => ({ ...song, idx: showList.length - i }))
         .forEach((song) => {
           const li = document.createElement("li");
-          let songTitle = escapeHtml(song.songLink);
-          if (song.idx === 3) songTitle = `<a href="#">${songTitle}</a>`;
-          li.innerHTML = `<span class="num">${song.idx}</span> ${songTitle}${
-            song.story ? ` - ${escapeHtml(song.story)}` : ""
-          }`;
-          if (song.idx === 5)
-            li.innerHTML += `<span class="badge">조상철</span>`;
+          const songTitle = song.songTitle || song.songLink || "";
+          const storyHtml = song.story
+            ? `<span class="story">${escapeHtml(song.story)}</span><br>`
+            : "";
+          li.innerHTML = `<span class="num">${
+            song.idx
+          }</span> <strong>${escapeHtml(songTitle)}${storyHtml}</strong>`;
           allSongsOl.appendChild(li);
         });
     } catch (e) {
