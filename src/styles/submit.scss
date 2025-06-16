@@ -232,3 +232,57 @@ body {
     width: 100%;
   }
 }
+.song-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#todaySongs.song-list {
+  max-height: 200px;
+}
+#allSongs.song-list {
+  max-height: 200px;
+}
+.song-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border-bottom: 1px solid #edf0f5;
+  padding: 12px 0;
+}
+.song-thumb {
+  width: 80px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: black;
+  margin-right: 10px;
+}
+.song-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.song-info strong {
+  font-size: 1rem;
+  font-weight: 600;
+  color: black;
+  line-height: 1.25;
+}
+.channel-title {
+  font-size: 0.93em;
+  color: #888;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-weight: 400;
+  display: block;
+}
+.song-info .story {
+  font-size: 0.92em;
+  color: black;
+  margin-top: 4px;
+  display: block;
+}

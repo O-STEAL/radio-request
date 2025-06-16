@@ -110,6 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+  let todaySongScrollTop = 0;
+  let allSongScrollTop = 0;
+
   async function loadSongs() {
     todaySongsOl.innerHTML = "<li>불러오는 중...</li>";
     allSongsOl.innerHTML = "<li>불러오는 중...</li>";
@@ -119,44 +122,61 @@ document.addEventListener("DOMContentLoaded", () => {
       const songs = await res.json();
 
       todaySongsOl.innerHTML = "";
-      songs
-        .slice(-4)
-        .reverse()
-        .forEach((song, i) => {
-          const li = document.createElement("li");
-          const songTitle = song.songTitle || song.songLink || "";
-          const storyHtml = song.story
-            ? `<span class="story">${escapeHtml(song.story)}</span><br>`
-            : "";
-          li.innerHTML = `<span class="num">${
-            4 - i
-          }</span> <strong>${escapeHtml(songTitle)}</strong>${storyHtml}`;
-          todaySongsOl.appendChild(li);
-        });
+      const todaySongs = songs.slice(-10).reverse();
+      todaySongs.forEach((song, i) => {
+        const li = document.createElement("li");
+        const thumbnailUrl = song.thumbnailUrl || "/assets/default-thumb.png";
+        const songTitle = song.songTitle || song.songLink || "";
+        const channelTitle = song.channelTitle || "";
+        const storyHtml = song.story
+          ? `<span class="story">${escapeHtml(song.story)}</span><br>`
+          : "";
+        li.innerHTML = `
+          <img class="song-thumb" src="${thumbnailUrl}" alt="${escapeHtml(
+          songTitle
+        )}" onerror="this.src='/assets/default-thumb.png'" />
+          <div class="song-info">
+            <strong>${escapeHtml(songTitle)}</strong>
+            <span class="channel-title">${escapeHtml(channelTitle)}</span>
+            ${storyHtml}
+          </div>
+        `;
+        todaySongsOl.appendChild(li);
+      });
 
       allSongsOl.innerHTML = "";
-      const showList = showAll ? songs : songs.slice(-6);
+      const showList = showAll ? songs : songs.slice(-4);
       showList
         .map((song, i) => ({ ...song, idx: showList.length - i }))
         .forEach((song) => {
           const li = document.createElement("li");
-          const thumbnailUrl = song.thumbnailUrl;
+          const thumbnailUrl = song.thumbnailUrl || "/assets/default-thumb.png";
           const songTitle = song.songTitle || song.songLink || "";
+          const channelTitle = song.channelTitle || "";
           const storyHtml = song.story
             ? `<span class="story">${escapeHtml(song.story)}</span><br>`
             : "";
-          li.innerHTML = `<img src="${thumbnailUrl}" alt="${escapeHtml(
+          li.innerHTML = `
+            <img class="song-thumb" src="${thumbnailUrl}" alt="${escapeHtml(
             songTitle
-          )}" onerror="this.src='/assets/default-thumb.png'" /><span class="num">${
-            song.idx
-          }</span> <strong>${escapeHtml(songTitle)}${storyHtml}</strong>`;
+          )}" onerror="this.src='/assets/default-thumb.png'" />
+            <div class="song-info">
+              <strong>${escapeHtml(songTitle)}</strong>
+              <span class="channel-title">${escapeHtml(channelTitle)}</span>
+              ${storyHtml}
+            </div>
+          `;
           allSongsOl.appendChild(li);
         });
+
+      todaySongsOl.scrollTop = todaySongScrollTop;
+      allSongsOl.scrollTop = allSongScrollTop;
     } catch (e) {
       todaySongsOl.innerHTML = "<li>신청곡을 불러오지 못했습니다.</li>";
       allSongsOl.innerHTML = "<li>신청곡을 불러오지 못했습니다.</li>";
     }
   }
+
   function escapeHtml(str) {
     if (!str) return "";
     return str.replace(/[&<>"']/g, function (m) {
@@ -169,5 +189,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }[m];
     });
   }
+
+  document.getElementById("todaySongs").addEventListener("scroll", (e) => {
+    todaySongScrollTop = e.target.scrollTop;
+  });
+  document.getElementById("allSongs").addEventListener("scroll", (e) => {
+    allSongScrollTop = e.target.scrollTop;
+  });
+
   loadSongs();
 });
