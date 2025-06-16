@@ -140,11 +140,14 @@ document.addEventListener("DOMContentLoaded", () => {
         .map((song, i) => ({ ...song, idx: showList.length - i }))
         .forEach((song) => {
           const li = document.createElement("li");
+          const thumbnailUrl = song.thumbnailUrl;
           const songTitle = song.songTitle || song.songLink || "";
           const storyHtml = song.story
             ? `<span class="story">${escapeHtml(song.story)}</span><br>`
             : "";
-          li.innerHTML = `<span class="num">${
+          li.innerHTML = `<img src="${thumbnailUrl}" alt="${escapeHtml(
+            songTitle
+          )}" onerror="this.src='/assets/default-thumb.png'" /><span class="num">${
             song.idx
           }</span> <strong>${escapeHtml(songTitle)}${storyHtml}</strong>`;
           allSongsOl.appendChild(li);
