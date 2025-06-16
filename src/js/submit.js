@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     : "";
   document.getElementById("logout-btn").onclick = () => {
     localStorage.clear();
-    window.location.href = "index.html";
+    window.location.href = "/";
   };
 
   const todaySongsOl = document.getElementById("todaySongs");
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         resultDiv.textContent = "로그인 후 이용 가능합니다.";
         resultDiv.style.color = "red";
         setTimeout(() => {
-          window.location.href = "index.html";
+          window.location.href = "/";
         }, 2000);
         return;
       }
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
           resultDiv.textContent = "인증이 필요합니다. 다시 로그인하세요.";
           resultDiv.style.color = "red";
           setTimeout(() => {
-            window.location.href = "index.html";
+            window.location.href = "/";
           }, 2000);
         } else {
           resultDiv.textContent =
