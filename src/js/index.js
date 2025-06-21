@@ -133,6 +133,7 @@ function handleRegisterStep1() {
 // 회원가입 2단계
 async function handleRegisterStep2() {
   const pw1 = document.getElementById("pw1").value;
+  const shaPw = window.CryptoJS.SHA512(pw1).toString(window.CryptoJS.enc.Hex);
   const pw2 = document.getElementById("pw2").value;
   if (pw1.length < 8) return alert("비밀번호는 8자 이상이어야 합니다.");
   if (pw1 !== pw2) return alert("비밀번호가 일치하지 않습니다.");
@@ -142,7 +143,7 @@ async function handleRegisterStep2() {
     body: JSON.stringify({
       username: registerForm1.querySelector('[name="username"]').value,
       name: registerForm1.querySelector('[name="name"]').value,
-      password: pw1,
+      password: shaPw,
     }),
   });
   if (res.status === 201 || res.ok) {
@@ -167,7 +168,9 @@ async function handleLogin(e) {
   msgSpan.textContent = "";
   if (!username || !password) return;
 
-  const shaPw = window.CryptoJS.SHA512(password).toString(window.CryptoJS.enc.Hex);
+  const shaPw = window.CryptoJS.SHA512(password).toString(
+    window.CryptoJS.enc.Hex
+  );
 
   const res = await apiFetch("/auth/login", {
     method: "POST",
