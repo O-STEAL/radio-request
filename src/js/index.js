@@ -166,10 +166,13 @@ async function handleLogin(e) {
   const msgSpan = document.getElementById("login-msg");
   msgSpan.textContent = "";
   if (!username || !password) return;
+
+  const shaPw = window.CryptoJS.SHA512(password).toString(window.CryptoJS.enc.Hex);
+
   const res = await apiFetch("/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ username, password: shaPw }),
   });
   if (!res.ok) {
     msgSpan.textContent = "아이디 또는 비밀번호가 올바르지 않습니다.";
