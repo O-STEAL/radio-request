@@ -28,9 +28,13 @@ const registerForm1 = document.getElementById("register-form1");
 const registerForm2 = document.getElementById("register-form2");
 const usernameInput = registerForm1.querySelector('[name="username"]');
 
-function renderSlide() {
-  const slide = slides[currentSlide];
-  document.getElementById("slide-area").innerHTML = `
+function renderSlide(idx = currentSlide) {
+  const slideArea = document.getElementById("slide-area");
+  slideArea.innerHTML = '';
+  const slide = slides[idx];
+  const div = document.createElement('div');
+  div.className = 'slide-content';
+  div.innerHTML = `
     <img src="${slide.img}" alt="" class="slide-img" />
     <div class="slide-title">${slide.title}</div>
     <div class="slide-desc">${slide.desc}</div>
@@ -38,19 +42,18 @@ function renderSlide() {
       ${slides
         .map(
           (_, i) =>
-            `<span class="slide-dot${
-              i === currentSlide ? " active" : ""
-            }"></span>`
+            `<span class="slide-dot${i === idx ? ' active' : ''}" data-index="${i}"></span>`
         )
         .join("")}
     </div>
   `;
+  slideArea.appendChild(div);
 }
 
 function startSlideAutoAdvance() {
   setInterval(() => {
     currentSlide = (currentSlide + 1) % slides.length;
-    renderSlide();
+    renderSlide(currentSlide);
   }, 5000);
 }
 
@@ -60,7 +63,7 @@ function showLoginForm() {
   registerForm2.style.display = "none";
   regStep = 0;
   currentSlide = 0;
-  renderSlide();
+  renderSlide(currentSlide);
 }
 function showRegisterStep1() {
   loginForm.style.display = "none";
@@ -218,6 +221,17 @@ function setEventListeners() {
   document.getElementById("register-next2").onclick = handleRegisterStep2;
   loginForm.onsubmit = handleLogin;
   document.getElementById("pw2").oninput = checkPasswordMatch;
+
+  // 슬라이드 dot 클릭 이벤트 위임
+  document.getElementById("slide-area").addEventListener("click", function(e) {
+    if (e.target.classList.contains("slide-dot")) {
+      const idx = parseInt(e.target.getAttribute("data-index"), 10);
+      if (!isNaN(idx) && idx !== currentSlide) {
+        currentSlide = idx;
+        renderSlide(currentSlide);
+      }
+    }
+  });
 }
 
 function init() {

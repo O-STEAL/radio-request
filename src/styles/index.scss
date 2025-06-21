@@ -55,6 +55,21 @@ body {
   }
 
   #slide-area {
+    position: relative;
+    min-height: 260px;
+    overflow: hidden;
+    
+    .slide-area-inner {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .slide-content {
+      display: block;
+      width: 100%;
+      background: transparent;
+    }
+
     width: 320px;
     max-width: 100%;
     margin: 0 auto;
@@ -65,6 +80,8 @@ body {
       object-fit: contain;
       display: block;
       margin: 0 auto 22px auto;
+      opacity: 1;
+      transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1), transform 0.45s cubic-bezier(0.4,0,0.2,1);
       @media (max-width: 700px) {
         width: 90px;
         height: 90px;
@@ -78,6 +95,8 @@ body {
       margin-bottom: 14px;
       letter-spacing: -1px;
       line-height: 1.15;
+      opacity: 1;
+      transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1), transform 0.45s cubic-bezier(0.4,0,0.2,1);
     }
     .slide-desc {
       color: $text-light;
@@ -87,7 +106,14 @@ body {
       margin-bottom: 28px;
       line-height: 1.6;
       letter-spacing: -0.5px;
+      opacity: 1;
+      transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1), transform 0.45s cubic-bezier(0.4,0,0.2,1);
     }
+    // Fade animation helpers
+    // carousel 애니메이션용 스타일 적용됨
+// 기존 fade 코드는 주석처리 또는 삭제
+
+
     .slide-indicator {
       display: flex;
       gap: 8px;
@@ -98,6 +124,7 @@ body {
         height: 11px;
         border-radius: 50%;
         background: #dbdeeb;
+        cursor: pointer;
         &.active {
           background: $primary;
         }
